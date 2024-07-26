@@ -17,6 +17,7 @@ import { lightTheme, darkTheme } from "./theme";
 import { Undo, LightMode, DarkMode } from "@mui/icons-material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { debounce } from "lodash";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -25,10 +26,19 @@ function App() {
   const sliderRef = useRef<HTMLDivElement>(null);
   const theme = darkMode ? darkTheme : lightTheme;
 
-  // Use the correct type for the event parameter
+  // Debounced changeTheme function
+  const debouncedChangeTheme = useCallback(
+    debounce(() => {
+      setDarkMode((prev) => !prev);
+    }, 150),
+    []
+  );
+
   const handleSliderChange = (_event: Event, newValue: number | number[]) => {
     setSliderVal(Array.isArray(newValue) ? newValue[0] : newValue);
   };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   const handleWheel = useCallback((event: WheelEvent) => {
     if (sliderRef.current) {
@@ -61,7 +71,7 @@ function App() {
       <CSSTransition
         key={darkMode ? "dark" : "light"}
         classNames="fade"
-        timeout={1200} // Match the duration of your CSS transition
+        timeout={400} // Match the duration of your CSS transition
       >
         {/* Material UI Theme */}
         <ThemeProvider theme={theme}>
@@ -86,7 +96,7 @@ function App() {
               <ToggleButton
                 value="check"
                 selected={darkMode}
-                onChange={() => setDarkMode((prev) => !prev)}
+                onChange={debouncedChangeTheme}
                 sx={{
                   width: "fit-content",
                 }}
@@ -95,7 +105,7 @@ function App() {
               </ToggleButton>
               <Tooltip
                 arrow
-                placement="left"
+                placement="bottom-end"
                 title="This h1 is actually an h4 in disguise!"
                 TransitionComponent={Zoom}
                 TransitionProps={{ timeout: 300 }}

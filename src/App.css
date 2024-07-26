@@ -5,7 +5,7 @@
   
   .fade-enter-active {
     opacity: 1;
-    transition: opacity 1200ms; /* Match the timeout value in CSSTransition */
+    transition: opacity 400ms; /* Match the timeout value in CSSTransition */
   }
   
   .fade-exit {
@@ -15,6 +15,6 @@
   
   .fade-exit-active {
     opacity: 0;
-    transition: opacity 1200ms; /* Match the timeout value in CSSTransition */
+    transition: opacity 400ms; /* Match the timeout value in CSSTransition */
   }
   
