@@ -25,15 +25,33 @@ function App() {
   const [sliderVal, setSliderVal] = useState<number>(100);
   const [textFieldVal, setTextFieldVal] = useState("");
   const sliderRef = useRef<HTMLDivElement>(null);
+  const nodeRef = useRef(null);
   const theme = darkMode ? darkTheme : lightTheme;
 
   // Debounced changeTheme function
   const debouncedChangeTheme = useCallback(
     debounce(() => {
       setDarkMode((prev) => !prev);
-    }, 150),
+    }, 125),
     []
   );
+
+  function GridItem(word: string, index: number) {
+    return (
+      <Grid key={index} item xs="auto">
+        <Paper
+          elevation={3}
+          sx={{
+            textWrap: "wrap",
+            padding: "0.25em 1.5em",
+            textAlign: "center",
+          }}
+        >
+          {word}
+        </Paper>
+      </Grid>
+    );
+  }
 
   const handleSliderChange = (_event: Event, newValue: number | number[]) => {
     setSliderVal(Array.isArray(newValue) ? newValue[0] : newValue);
@@ -67,158 +85,127 @@ function App() {
   }, [handleWheel]);
 
   return (
-    <TransitionGroup>
-      {/* Dark/Light Mode Transition */}
-      <CSSTransition
-        key={darkMode ? "dark" : "light"}
-        classNames="fade"
-        timeout={300} // Match the duration of your CSS transition
-      >
-        {/* Material UI Theme */}
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Box
+          {/* Content */}
+          <Stack
+            ref={nodeRef}
             component="main"
+            spacing={2}
+            alignItems="start"
             sx={{
-              p: "2em",
-              height: "100vh",
+              minHeight: "100vh",
+              width: "fit-content",
+              padding: "2em",
+              marginInline: "auto",
             }}
           >
-            {/* Content */}
-            <Stack
-              spacing={2}
-              alignItems="start"
+            <ToggleButton
+              value="check"
+              selected={darkMode}
+              onChange={debouncedChangeTheme}
               sx={{
-                height: "100%",
                 width: "fit-content",
-                marginInline: "auto",
               }}
             >
-              <ToggleButton
-                value="check"
-                selected={darkMode}
-                onChange={debouncedChangeTheme}
+              {darkMode ? <DarkMode /> : <LightMode />}
+            </ToggleButton>
+            <Tooltip
+              arrow
+              placement="bottom-end"
+              title="This h1 is actually an h4 in disguise!"
+              TransitionComponent={Zoom}
+              TransitionProps={{ timeout: 300 }}
+            >
+              <Typography variant="h4" component="h1">
+                //Material UI Test Grounds
+              </Typography>
+            </Tooltip>
+            <Button
+              variant="contained"
+              endIcon={<Undo />}
+              sx={{
+                width: "fit-content",
+              }}
+              onClick={() => {
+                setSliderVal(100);
+                setDarkMode(false);
+                setTextFieldVal("");
+              }}
+            >
+              Reset All Values
+            </Button>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "1em",
+                paddingInline: "1em 2em",
+                width: "100%",
+                border: `2px solid ${theme.palette.primary.main}`,
+                borderRadius: ".33em",
+              }}
+            >
+              <Typography variant="h4" component="p">
+                {sliderVal}%
+              </Typography>
+              <Slider
+                ref={sliderRef}
+                min={25}
+                defaultValue={sliderVal}
+                value={sliderVal}
+                onChange={handleSliderChange}
                 sx={{
-                  width: "fit-content",
-                }}
-              >
-                {darkMode ? <DarkMode /> : <LightMode />}
-              </ToggleButton>
-              <Tooltip
-                arrow
-                placement="bottom-end"
-                title="This h1 is actually an h4 in disguise!"
-                TransitionComponent={Zoom}
-                TransitionProps={{ timeout: 300 }}
-              >
-                <Typography variant="h4" component="h1">
-                  //Material UI Test Grounds
-                </Typography>
-              </Tooltip>
-              <Button
-                variant="contained"
-                endIcon={<Undo />}
-                sx={{
-                  width: "fit-content",
-                }}
-                onClick={() => {
-                  setSliderVal(100);
-                  setDarkMode(false);
-                  setTextFieldVal("");
-                }}
-              >
-                Reset All Values
-              </Button>
-              <h2 style={{ marginBottom: "0" }}>{sliderVal}%</h2>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  paddingInline: "1em",
                   width: "100%",
-                  border: `2px solid ${theme.palette.primary.main}`,
-                  borderRadius: ".33em",
-                }}
-              >
-                <Slider
-                  ref={sliderRef}
-                  min={25}
-                  defaultValue={sliderVal}
-                  value={sliderVal}
-                  onChange={handleSliderChange}
-                  sx={{
-                    width: "100%",
-                    "& .MuiSlider-thumb": {
-                      borderRadius: "15%",
-                    },
-                  }}
-                />
-              </Box>
-              <TextField
-                multiline
-                label="Write something..."
-                value={textFieldVal}
-                onChange={(e) => setTextFieldVal(e.target.value)}
-                sx={{
-                  width: `${sliderVal}%`,
+                  "& .MuiSlider-thumb": {
+                    borderRadius: "15%",
+                  },
                 }}
               />
-              <Paper
-                elevation={6}
-                sx={{
-                  p: "1em",
-                  width: `${sliderVal}%`,
-                }}
-              >
-                <Typography variant="body1">
-                  {textFieldVal
-                    ? textFieldVal
-                    : `<-- Text will appear here -->`}
-                </Typography>
-              </Paper>
-              <Typography variant="h5" component="h2">Grid:</Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={3} md={6}>
-                  <Paper elevation={3} sx={{
-                    textAlign: "center"
-                  }}>cell</Paper>
-                </Grid>
-                <Grid item xs={6} md={6}>
-                  <Paper elevation={3} sx={{
-                    textAlign: "center"
-                  }}>cell</Paper>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <Paper elevation={3} sx={{
-                    textAlign: "center"
-                  }}>cell</Paper>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <Paper elevation={3} sx={{
-                    textAlign: "center"
-                  }}>cell</Paper>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <Paper elevation={3} sx={{
-                    textAlign: "center"
-                  }}>cell</Paper>
-                </Grid>
-                <Grid item xs={6} md={5}>
-                  <Paper elevation={3} sx={{
-                    textAlign: "center"
-                  }}>cell</Paper>
-                </Grid>
-                <Grid item xs={6} md={7}>
-                  <Paper elevation={3} sx={{
-                    textAlign: "center"
-                  }}>cell</Paper>
-                </Grid>
-              </Grid>
-            </Stack>
-          </Box>
+            </Box>
+            <TextField
+              multiline
+              label="Write something..."
+              value={textFieldVal}
+              onChange={(e) => setTextFieldVal(e.target.value)}
+              sx={{
+                width: `${sliderVal}%`,
+              }}
+            />
+            <Paper
+              elevation={6}
+              sx={{
+                p: "1em",
+                width: `${sliderVal}%`,
+              }}
+            >
+              <Typography variant="body1">
+                {textFieldVal ? textFieldVal : `<-- Text will appear here -->`}
+              </Typography>
+            </Paper>
+            <Typography variant="h5" component="h2">
+              Grid:
+            </Typography>
+            <Grid
+              container
+              spacing={2}
+              sx={{
+                width: `${sliderVal}%`,
+                padding: "0 1em 1em 0",
+                alignSelf: "start",
+                border: `3px solid ${theme.palette.primary.main}`,
+                borderRadius: "1em",
+              }}
+            >
+              {textFieldVal
+                ? textFieldVal
+                    .split(" ")
+                    .map((word, index) => GridItem(word, index))
+                : GridItem("<-- Text will appear here -->", 1)}
+            </Grid>
+          </Stack>
         </ThemeProvider>
-      </CSSTransition>
-    </TransitionGroup>
   );
 }
 
