@@ -15,7 +15,7 @@ import {
   Zoom,
 } from "@mui/material";
 import { lightTheme, darkTheme } from "./theme";
-import { Undo, LightMode, DarkMode } from "@mui/icons-material";
+import { Undo, LightMode, DarkMode, Clear } from "@mui/icons-material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { debounce } from "lodash";
 
@@ -49,16 +49,19 @@ function App() {
     return (
       <Grid key={index} item xs="auto">
         <Button
+          startIcon={<Clear />}
           variant="outlined"
           sx={{
             textTransform: "unset",
-            textWrap: "wrap",
             padding: "0.25em 1.5em",
             textAlign: "center",
           }}
           onClick={() => removeWord(textFieldVal, word)}
         >
-          {word}
+          <Typography sx={{
+            wordWrap: "break-word",
+            overflowWrap: "break-word"
+          }}>{word}</Typography>
         </Button>
       </Grid>
     );
@@ -205,6 +208,7 @@ function App() {
             width: `${sliderVal}%`,
             padding: "0 1em 1em 0",
             alignSelf: "start",
+            overflow: "hidden",
             border: `3px solid ${theme.palette.primary.main}`,
             borderRadius: "1em",
           }}
