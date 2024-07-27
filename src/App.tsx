@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   CssBaseline,
+  Grid,
   Paper,
   Slider,
   Stack,
@@ -71,7 +72,7 @@ function App() {
       <CSSTransition
         key={darkMode ? "dark" : "light"}
         classNames="fade"
-        timeout={400} // Match the duration of your CSS transition
+        timeout={300} // Match the duration of your CSS transition
       >
         {/* Material UI Theme */}
         <ThemeProvider theme={theme}>
@@ -121,7 +122,7 @@ function App() {
                   width: "fit-content",
                 }}
                 onClick={() => {
-                  setSliderVal(50);
+                  setSliderVal(100);
                   setDarkMode(false);
                   setTextFieldVal("");
                 }}
@@ -175,6 +176,44 @@ function App() {
                     : `<-- Text will appear here -->`}
                 </Typography>
               </Paper>
+              <Typography variant="h5" component="h2">Grid:</Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={3} md={6}>
+                  <Paper elevation={3} sx={{
+                    textAlign: "center"
+                  }}>cell</Paper>
+                </Grid>
+                <Grid item xs={6} md={6}>
+                  <Paper elevation={3} sx={{
+                    textAlign: "center"
+                  }}>cell</Paper>
+                </Grid>
+                <Grid item xs={6} md={4}>
+                  <Paper elevation={3} sx={{
+                    textAlign: "center"
+                  }}>cell</Paper>
+                </Grid>
+                <Grid item xs={6} md={4}>
+                  <Paper elevation={3} sx={{
+                    textAlign: "center"
+                  }}>cell</Paper>
+                </Grid>
+                <Grid item xs={6} md={4}>
+                  <Paper elevation={3} sx={{
+                    textAlign: "center"
+                  }}>cell</Paper>
+                </Grid>
+                <Grid item xs={6} md={5}>
+                  <Paper elevation={3} sx={{
+                    textAlign: "center"
+                  }}>cell</Paper>
+                </Grid>
+                <Grid item xs={6} md={7}>
+                  <Paper elevation={3} sx={{
+                    textAlign: "center"
+                  }}>cell</Paper>
+                </Grid>
+              </Grid>
             </Stack>
           </Box>
         </ThemeProvider>
