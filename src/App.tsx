@@ -17,7 +17,7 @@ import {
 import { lightTheme, darkTheme } from "./theme";
 import { Undo, LightMode, DarkMode } from "@mui/icons-material";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { debounce, transform } from "lodash";
+import { debounce } from "lodash";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
