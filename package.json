@@ -18,8 +18,7 @@
     "@types/lodash": "^4.17.7",
     "lodash": "^4.17.21",
     "react": "^17.0.0 || ^18.0.0",
-    "react-dom": "^17.0.0 || ^18.0.0",
-    "react-transition-group": "^4.4.5"
+    "react-dom": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

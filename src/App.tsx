@@ -17,7 +17,6 @@ import {
 import { lightTheme, darkTheme } from "./theme";
 import { Undo, LightMode, DarkMode } from "@mui/icons-material";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { debounce } from "lodash";
 
 function App() {
